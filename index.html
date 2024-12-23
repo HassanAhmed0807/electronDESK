@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!-- <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+</head>
+<body>
+
+    <h2>Login Form</h2>
+    <form id="loginForm">
+        <div>
+            <label for="id">ID:</label>
+            <input type="number" id="id" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the values from the form inputs
+            const userId = document.getElementById('id').value;
+            const password = document.getElementById('password').value;
+
+            // URL to submit the form data
+            const targetUrl = 'http://localhost:8000'; // Replace with the correct URL
+
+            // Send a POST request using Fetch API to submit the form data
+            fetch(targetUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded', // Send as form data
+                },
+                body: new URLSearchParams({
+                    'employee_id': userId,
+                    'password': password
+                })
+            })
+            .then(response => response.json()) // Assuming the response is JSON
+            .then(data => {
+                // Check if the response contains a redirect_url
+                if (data.redirect_url) {
+                    // Navigate to the new URL (provided in the response)
+                    window.location.href = 'http://localhost:8000/' + data.redirect_url;
+
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+
+</body>
+</html> -->
+
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" href="{% static 'Assets/log.jpg' %}">
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script rel="stylesheet" src="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css"></script>
+    <!-- Include DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <!-- Include DataTables Buttons JS -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body style="background-image: url('./map.jpg'); background-repeat: no-repeat; background-size: 100% 100%;">
+    
+    <section  >
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen md:h-screen lg:py-0">
+            <div class="w-full bg-gray-600 rounded-lg shadow opacity-90 md:mt-0 sm:max-w-md xl:p-0">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8  rounded-lg">
+                    <h1 class="text-2xl font-bold leading-tight tracking-tight text-white ml-[41%] md:text-2xl ">
+                        Login For<br> DAT Application
+                    </h1>
+                    <form class="space-y-4 md:space-y-6" id="loginForm" method="post">
+                        
+                        <div>
+                            <label for="id" class="font-bold mb-2 text-sm font-medium text-white">Your ID</label>
+                            <input type="number" name="userid" id="user_id" class="font-bold bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                        </div>
+                        <div class="relative">
+                            <label for="password" class="font-bold mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                            <input type="password" name="password" id="password" class="font-bold bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pr-10" required="">
+                            <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 focus:outline-none">
+                                <img src="./seepassword.png" alt="Show password" class="mt-6 h-6 w-6">
+                            </button>
+                        </div>
+                        
+                        
+                        <button type="submit" class="w-full text-white bg-blue-600 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Log in</button>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.querySelector('svg').classList.toggle('text-gray-600');
+        });
+      </script>
+
+
+      
+      <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the values from the form inputs
+            const userId = document.getElementById('user_id').value;
+            const password = document.getElementById('password').value;
+
+            // URL to submit the form data
+            const targetUrl = 'http://localhost:8000'; // Replace with the correct URL
+
+            // Send a POST request using Fetch API to submit the form data
+            fetch(targetUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded', // Send as form data
+                },
+                body: new URLSearchParams({
+                    'employee_id': userId,
+                    'password': password
+                })
+            })
+            .then(response => response.json()) // Assuming the response is JSON
+            .then(data => {
+                // Check if the response contains a redirect_url
+                if (data.redirect_url) {
+                    // Navigate to the new URL (provided in the response)
+                    window.location.href = 'http://localhost:8000/' + data.redirect_url;
+
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+    <script>
+        // Listen for keydown events to capture keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Check if the 'Alt' key is pressed along with the left arrow key (for Back)
+            if (event.altKey && event.key === 'ArrowLeft') {
+                event.preventDefault(); // Prevent default browser behavior
+                window.history.back();  // Go to the previous page
+            }
+    
+            // Check if the 'Alt' key is pressed along with the right arrow key (for Forward)
+            if (event.altKey && event.key === 'ArrowRight') {
+                event.preventDefault(); // Prevent default browser behavior
+                window.history.forward();  // Go to the next page
+            }
+    
+            // Check if the 'F5' key or 'Ctrl + R' is pressed (for Reload)
+            if  (event.ctrlKey && event.key === 'r') {
+                event.preventDefault(); // Prevent default browser behavior
+                window.location.reload();  // Reload the current page
+            }
+        });
+    </script>
+    
+
+
+    
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+</body>
+</html>
